@@ -53,3 +53,7 @@ Antes de activar estas reglas, sincroniza las citas antiguas creando un document
 - Configura restricciones de origen/dominio en EmailJS.
 
 Consulta también [SECURITY.md](SECURITY.md).
+
+## Licencia
+
+Código propietario. Consulta [LICENSE](LICENSE). La publicación del repositorio no concede derechos de copia, modificación, distribución o reventa.
