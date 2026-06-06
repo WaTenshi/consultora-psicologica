@@ -57,67 +57,78 @@ function FloatingChat() {
   const sendMessage = () => {
     if (!message.trim() || loading) return
 
-    const lowerMessage = message.toLowerCase()
+    const currentMessage = message
+    const lowerMessage = currentMessage.toLowerCase()
 
-    // BLOQUEO DE TEMAS SENSIBLES
-    const containsBlockedTopic = blockedTopics.some(topic =>
-      lowerMessage.includes(topic)
-    )
+    try {
+      // BLOQUEO DE TEMAS SENSIBLES
+      const containsBlockedTopic = blockedTopics.some(topic =>
+        lowerMessage.includes(topic)
+      )
 
-    if (containsBlockedTopic) {
+      if (containsBlockedTopic) {
+        setMessages(prev => [
+          ...prev,
+          {
+            role: 'user',
+            content: currentMessage
+          },
+          {
+            role: 'assistant',
+            content:
+              'Lo siento, pero no puedo abordar situaciones clínicas o de crisis. Te recomendamos contactar directamente a Natasha Silva o buscar ayuda profesional inmediata si se trata de una urgencia.'
+          }
+        ])
+
+        setMessage('')
+        return
+      }
+
+      // MODO FAQ
+      const containsFaqTopic = faqTopics.some(topic =>
+        lowerMessage.includes(topic)
+      )
+
+      if (!containsFaqTopic && lowerMessage.length > 25) {
+        setMessages(prev => [
+          ...prev,
+          {
+            role: 'user',
+            content: currentMessage
+          },
+          {
+            role: 'assistant',
+            content:
+              'Puedo ayudarte con información sobre servicios, horarios, modalidad online, ubicación y reservas de sesiones 😊'
+          }
+        ])
+
+        setMessage('')
+        return
+      }
+
+      const userMessage = {
+        role: 'user',
+        content: currentMessage
+      }
+
+      const assistantMessage = {
+        role: 'assistant',
+        content: getAdministrativeResponse(lowerMessage)
+      }
+
+      setMessages(prev => [...prev, userMessage, assistantMessage])
+    } catch (error) {
+      console.error('Error al responder desde el chatbot:', error)
       setMessages(prev => [
         ...prev,
-        {
-          role: 'user',
-          content: message
-        },
-        {
-          role: 'assistant',
-          content:
-            'Lo siento, pero no puedo abordar situaciones clínicas o de crisis. Te recomendamos contactar directamente a Natasha Silva o buscar ayuda profesional inmediata si se trata de una urgencia.'
-        }
+        { role: 'user', content: currentMessage },
+        { role: 'assistant', content: 'Chatbot no disponible en estos momentos' }
       ])
-
+    } finally {
       setMessage('')
-      return
+      setLoading(false)
     }
-
-    // MODO FAQ
-    const containsFaqTopic = faqTopics.some(topic =>
-      lowerMessage.includes(topic)
-    )
-
-    if (!containsFaqTopic && lowerMessage.length > 25) {
-      setMessages(prev => [
-        ...prev,
-        {
-          role: 'user',
-          content: message
-        },
-        {
-          role: 'assistant',
-          content:
-            'Puedo ayudarte con información sobre servicios, horarios, modalidad online, ubicación y reservas de sesiones 😊'
-        }
-      ])
-
-      setMessage('')
-      return
-    }
-
-    const userMessage = {
-      role: 'user',
-      content: message
-    }
-
-    const assistantMessage = {
-      role: 'assistant',
-      content: getAdministrativeResponse(lowerMessage)
-    }
-
-    setMessages(prev => [...prev, userMessage, assistantMessage])
-    setMessage('')
-    setLoading(false)
   }
 
   return (

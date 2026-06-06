@@ -39,7 +39,7 @@ export default function Navbar() {
           </li>
           <li>
             <a href="#forma-trabajo" onClick={() => setIsOpen(false)}>
-              Mi Forma de Trabajo
+              Forma de Trabajo
             </a>
           </li>
           <li>
