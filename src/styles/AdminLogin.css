@@ -141,6 +141,40 @@
   cursor: not-allowed;
 }
 
+.password-visibility-btn {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  color: #64748b;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.password-visibility-btn:hover:not(:disabled) {
+  color: #183f38;
+  background: #edf6f1;
+}
+
+.password-visibility-btn:focus-visible {
+  outline: 2px solid #2f6f62;
+  outline-offset: 2px;
+}
+
+.password-visibility-btn svg {
+  color: currentColor;
+}
+
+.password-visibility-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .login-button {
   display: inline-flex;
   align-items: center;

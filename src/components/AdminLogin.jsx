@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { LockKeyhole, Mail, X } from 'lucide-react'
+import { Eye, EyeOff, LockKeyhole, Mail, X } from 'lucide-react'
 import { auth } from '../config/firebase'
 import '../styles/AdminLogin.css'
 
 export default function AdminLogin({ onLoginSuccess, onClose }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -62,7 +63,8 @@ export default function AdminLogin({ onLoginSuccess, onClose }) {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="ps.natasha.silva@gmail.com"
+                  aria-label="Correo electrónico"
+                  autoComplete="username"
                   disabled={loading}
                 />
               </div>
@@ -73,12 +75,23 @@ export default function AdminLogin({ onLoginSuccess, onClose }) {
               <div className="admin-login-input">
                 <LockKeyhole size={18} />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Contraseña de administrador"
+                  aria-label="Contraseña"
+                  autoComplete="current-password"
                   disabled={loading}
                 />
+                <button
+                  type="button"
+                  className="password-visibility-btn"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  title={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                  disabled={loading}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 
